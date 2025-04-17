@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: nextcloud
+    env: docker
+    plan: free
+    branch: main
+    healthCheckPath: /
+    envVars:
+      - key: POSTGRES_HOST
+        value: dpg-d00ipifgi27c73bbbpjg-a
+      - key: POSTGRES_DB
+        value: nextcloud_bxdy
+      - key: POSTGRES_USER
+        value: nextcloud_bxdy_user
+      - key: POSTGRES_PASSWORD
+        value: oGprtEmIrEACbvZ8XJFQTs5Qy4ccxccO
+      - key: NEXTCLOUD_ADMIN_USER
+        value: admin
+      - key: NEXTCLOUD_ADMIN_PASSWORD
+        value: yourpassword
+    dockerContext: .
+    autoDeploy: false
+    
