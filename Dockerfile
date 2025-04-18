@@ -1,7 +1,17 @@
-FROM nextcloud:apache
+FROM alpine:latest
 
-# เพิ่ม PHP library พื้นฐาน
-RUN apt-get update && apt-get install -y \
-  libmagickcore-6.q16-6-extra \
-  && rm -rf /var/lib/apt/lists/*
-  
+# ติดตั้ง rclone
+RUN apk add --no-cache curl && \
+    curl https://rclone.org/install.sh | sh
+
+# สร้างผู้ใช้ rclone
+RUN addgroup -S app && adduser -S app -G app
+USER app
+
+# คัดลอกไฟล์ config เข้า container
+COPY rclone.conf /home/app/.config/rclone/rclone.conf
+
+EXPOSE 8080
+
+# รัน WebDAV Server
+CMD ["rclone", "serve", "webdav", "b2remote:your-bucket", "--addr", ":8080", "--user", "youruser", "--pass", "yourpass"]
